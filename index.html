@@ -1,0 +1,240 @@
+<html>
+	<head>
+		
+
+		<style type="text/css">
+
+		* {
+			margin: 0;
+			padding: 0;
+		}
+		body{
+			background-color: #330000;
+		}
+				
+			#slider {
+				width: 640px;
+				height: 420px;
+				margin: 50px auto;
+				border: 5px solid black;
+				box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+				position: relative;
+			}
+
+			#slider ul {
+				display: block;
+				width: 640px;
+				height: 420px;
+				overflow: hidden;
+				position: relative;
+			}
+
+			#slider ul li {
+				position: absolute;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				top: 0;
+				z-index: 2;
+				list-style: none;
+				overflow: hidden;
+			}
+
+			#b1{
+				position: absolute;
+				bottom:0;
+				right:0;
+				z-index:6;
+			}
+
+			#radio1{
+				text-align: center;
+				
+			}
+
+			.button{
+				background-color:  #330000;
+			    border: none;
+			    color: white;
+			    cursor: pointer;
+			    width:50px;
+			    height: 30px;
+			    text-align: center;
+			    text-decoration: none;
+			    display: inline-block;
+			    
+			}
+
+			/*#slider ul li  img {
+				width: 100%;
+				min-height: 100%;
+			}*/
+
+			#slider ul .active {
+				z-index: 5;
+			}
+
+			#slider ul .next-active {
+				z-index: 3;
+			}
+
+			.ltr-enter {
+				animation: ltr-enter 1s ease;
+			}
+
+			.ltr-exit {
+				animation: ltr-exit 1s ease;
+			}
+
+			.rtl-enter {
+				animation: rtl-enter 1s ease;
+			}
+
+			.rtl-exit {
+				animation: rtl-exit 1s ease;
+			}
+
+			@keyframes rtl-enter {
+				0% {
+					transform: translate(100%, 0)
+				}
+				100%{
+					transform: translate(0, 0)
+				}
+			}
+
+			@keyframes rtl-exit {
+				0%{
+					transform: translate(0, 0);
+				}
+				100% {
+					transform: translate(-100%, 0)
+				}
+			}
+
+			@keyframes ltr-enter {
+				0% {
+					transform: translate(-100%, 0)
+				}
+				100%{
+					transform: translate(0, 0)
+				}
+			}
+
+			@keyframes ltr-exit {
+				0%{
+					transform: translate(0, 0);
+				}
+				100% {
+					transform: translate(100%, 0)
+				}
+			}
+
+
+		</style>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+	</head>
+	<body>
+
+		<script src = "script1.js"></script>
+		<div id="slider">
+			<ul class = "items">
+				<li class="active"><img src="img/gtav-money.jpg"></li>
+			</ul>
+
+			<div id="b1">
+			<input type="button" class="button" value="prev" onclick="call2(); prev_radio();">
+			<input type="button" class="button" value="next" onclick="call1(); next_radio();">
+			<!--<button type="button" onclick="call2(); prev_radio();" id = "prev">prev</button>
+			<button type="button" onclick = "call1(); next_radio();" id = "next">next</button>-->
+		</div>
+		
+		</div>
+		
+	
+		<div id = "radio1">
+				<input type="radio" name="speeds" >
+				<input type="radio" name="speeds" checked>
+				<input type="radio" name="speeds" >
+		</div>
+
+
+
+		<script type="text/javascript">
+			
+			var $slider = $('#slider'),
+				$ul = $slider.find('ul');
+
+			var call1 = function() {
+				var $active = $ul.find('.active'),
+					$next = $active.next('li').length ? $active.next('li') : $ul.find('li:first-child');
+					console.log($next);
+
+				$active.addClass('rtl-exit');
+				$next.addClass('next-active')
+					.addClass('rtl-enter');
+
+				setTimeout(function() {
+					$active.removeClass('rtl-exit')
+						.removeClass('active');
+
+					$next.removeClass('rtl-enter')
+						.removeClass('next-active')
+						.addClass('active');
+				}, 1000);
+			}
+
+			var call2 = function()
+			{
+				var $active = $ul.find('.active'),
+					$next = $active.prev('li').length ? $active.prev('li') : $ul.find('li:last-child');
+					
+				$active.addClass('ltr-exit');
+				$next.addClass('next-active')
+					 .addClass('ltr-enter');
+
+				setTimeout(function()
+					{
+						$active.removeClass('ltr-exit')
+							 .removeClass('active');
+
+						$next.removeClass('ltr-enter')
+						.removeClass('next-active')
+						.addClass('active');
+					}, 1000);
+
+			}
+
+			var $radios = $('input[type="radio"][name="speeds"]');
+			function prev_radio() 
+			{
+				var $checked = $radios.filter(':checked');
+			    var $next = $radios.eq($radios.index($checked) - 1);
+			    if(!$next.length){
+			        $next = $radios.last();
+		   			}
+		    $next.prop("checked", true);
+			};		
+
+			function next_radio() 
+			{
+				var $checked = $radios.filter(':checked');
+			    var $next = $radios.eq($radios.index($checked) + 1);
+			    if(!$next.length){
+			        $next = $radios.first();
+		   			}
+		    $next.prop("checked", true);
+			};	
+
+			
+
+			var output = ""; // initialize it outside the loop
+				$.each(json.imageItems,function()
+				{
+				    output += '<li><img src= "'+this.images+'"></li>';
+				});
+				$('.items').append(output);
+
+		</script>
+	</body>
+</html>
